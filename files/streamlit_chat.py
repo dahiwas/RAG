@@ -1,4 +1,6 @@
 import streamlit as st
+from preencher_colecao import realizar_upload
+from QA import perguntar_gpt_fabrica
 
 # Configura a página (opcional)
 st.set_page_config(page_title="RAG - ChatBot", layout="wide")
@@ -68,22 +70,33 @@ if st.session_state.pagina == "Chatbot":
     # Campo de entrada para o chat
     query = st.chat_input("Digite sua pergunta...")
     if query:
+        
         # Armazena a mensagem do usuário
         st.session_state.messages.append({"role": "user", "content": query})
         # Resposta simulada (substitua pela sua IA, se desejar)
-        resposta = f"Você disse: {query}"
+        resposta = perguntar_gpt_fabrica(query)
+        
         st.session_state.messages.append({"role": "assistant", "content": resposta})
         st.rerun()
 
 # ----- UPLOAD DE ARQUIVOS -----
 elif st.session_state.pagina == "Upload de Arquivos":
     st.subheader("Faça o upload de seus artigos de texto (.pdf/.txt)")
-    arquivo = st.file_uploader("Selecione um arquivo", type=["txt", "csv", "pdf", "png", "jpg"])
-    if arquivo is not None:
-        st.success("Arquivo carregado com sucesso!")
-        if arquivo.type == "text/plain":
-            conteudo = arquivo.read().decode("utf-8")
-            st.text_area("Conteúdo do arquivo", conteudo, height=300)
+    # Campo para inserir o tema
+    tema = st.text_input("Digite o tema do arquivo:")
+    arquivo = st.file_uploader("Selecione um arquivo", type=["txt", "pdf"])
+    if arquivo is not None and tema is not None:
+        st.success("Arquivo Aberto com sucesso!")
+        
+        try:
+            realizar_upload(arquivo, tema)
+            st.success("Arquivo upado com sucesso para o VectorDataBase")
+
+        except Exception as e:
+            st.error(f"Ocorreu um erro {e}")
+
+
+        
 
 st.markdown("</div>", unsafe_allow_html=True)
 

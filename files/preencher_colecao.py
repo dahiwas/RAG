@@ -1,24 +1,26 @@
 from utils import *
 
-filepath = 'Artigos/supressao.pdf'
-tema = 'Supressao condicionada'
+#filepath = 'Artigos/supressao.pdf'
+#tema = 'Supressao condicionada'
 
-client = logar()
-#Pegar o vetor client
-vector = vector_store_create(client)    
+def realizar_upload(filepath, tema):
 
-raw_text = abrir_pdf(filepath)
+    client = logar()
+    #Pegar o vetor client
+    vector = vector_store_create(client)    
 
-print('DEBUG TEXTO')
-#print(raw_text)
+    raw_text = abrir_pdf(filepath)
 
-texts = get_chunks(raw_text)
+    print('DEBUG TEXTO')
+    #print(raw_text)
 
-#Inserir metadata
-metadata = get_metadata(texts, tema, filepath)
+    texts = get_chunks(raw_text)
 
-print('METADATA')
-print(f"Tamanho de texts: {len(texts)}")
-print(f"Tamanho de metadata: {len(metadata)}")
+    #Inserir metadata
+    metadata = get_metadata(texts, tema, filepath)
 
-input_data(vector, texts, metadata)
+    print('METADATA')
+    print(f"Tamanho de texts: {len(texts)}")
+    print(f"Tamanho de metadata: {len(metadata)}")
+
+    input_data(vector, texts, metadata)

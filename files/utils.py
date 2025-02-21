@@ -27,12 +27,22 @@ def logar():
 #######################################################################################Injetar Dados
 
 
-
+"""
 def abrir_pdf(filepath):
     texto = ""
     with fitz.open(filepath) as pdf:
         for pagina in pdf:
             texto += pagina.get_text() + '\n'
+    return texto
+"""
+def abrir_pdf(arquivo):
+    texto = ""
+    # Garante que o ponteiro do arquivo esteja no início
+    arquivo.seek(0)
+    # Abre o PDF a partir do stream, especificando o filetype
+    pdf = fitz.open(stream=arquivo.read(), filetype="pdf")
+    for pagina in pdf:
+        texto += pagina.get_text() + '\n'
     return texto
 
 def abrir_txt(filepath):
