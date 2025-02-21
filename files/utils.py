@@ -100,7 +100,7 @@ def question(vectorstore):
     )
     return qa
 
-def buscar_documentos(vectorstore, query, k=20):
+def buscar_documentos(vectorstore, query, k=500):
     """
     Busca documentos similares à query no banco vetorial sem chamar o GPT.
     
@@ -112,10 +112,12 @@ def buscar_documentos(vectorstore, query, k=20):
     retriever = vectorstore.as_retriever(search_type="similarity")  # Configura a busca
     documentos = retriever.get_relevant_documents(query, k=k)  # Busca os documentos
     # Filtrar documentos cujo metadado "tema" esteja na query
+    # Dessa forma assegura de que vamos ter o contexto aqui dentro
     documentos_filtrados = [
         doc for doc in documentos
         if doc.metadata['tema'].lower() in query.lower() 
     ]
+    documentos_filtrados = documentos_filtrados[:3]
     return documentos_filtrados
 
 #def resposta(vectorstore):

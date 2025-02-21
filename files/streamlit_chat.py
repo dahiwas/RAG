@@ -1,6 +1,6 @@
 import streamlit as st
 from preencher_colecao import realizar_upload
-from QA import perguntar_gpt_fabrica
+from QA import perguntar_gpt_fabrica, perguntar_gpt_4
 
 # Configura a página (opcional)
 st.set_page_config(page_title="RAG - ChatBot", layout="wide")
@@ -74,7 +74,7 @@ if st.session_state.pagina == "Chatbot":
         # Armazena a mensagem do usuário
         st.session_state.messages.append({"role": "user", "content": query})
         # Resposta simulada (substitua pela sua IA, se desejar)
-        resposta = perguntar_gpt_fabrica(query)
+        resposta = perguntar_gpt_4(query)
         
         st.session_state.messages.append({"role": "assistant", "content": resposta})
         st.rerun()
